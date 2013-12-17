@@ -117,17 +117,22 @@ package {
 		// Win condition methods.
 		// =======================================================================//
 		public function winDiagonal(loc:Point):Boolean {
-			return winDiagDir(loc, true, true) || winDiagDir(loc, true, false) || winDiagDir(loc, false, false) || winDiagDir(loc, false, true);
+			return winDiagDir(loc, true) || winDiagDir(loc, false);
 		}
 		
-		public function winDiagDir(loc:Point, leftward:Boolean, upward:Boolean):Boolean {
+		public function winDiagDir(loc:Point, leftward:Boolean):Boolean {
 			var connect:uint = 1;
 			var hs:int = leftward ? -1 : 1;
-			var vs:int = upward ? -1 : 1;
+			//var vs:int = upward ? -1 : 1;
 			var i:uint = loc.x;
 			var j:uint = loc.y;
-			while (inBounds(i, j) && inBounds(i + vs, j + hs)) {
-				if (grid[i][j] == grid[i + vs][j + hs] && grid[i][j] != "_") {
+			//Set ij to upperleft/upperright depending on dir
+			while (inBounds(i - 1, j - hs)) {
+				i--;
+				j -= hs;
+			}
+			while (inBounds(i, j) && inBounds(i + 1, j + hs)) {
+				if (grid[i][j] == grid[i + 1][j + hs] && grid[i][j] != "_") {
 					connect++;
 				} else {
 					connect = 1;
@@ -135,7 +140,7 @@ package {
 				if (connect == Main.connectN) {
 					return true;
 				}
-				i += vs;
+				i++;
 				j += hs;
 			}
 			return false;

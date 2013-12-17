@@ -80,7 +80,7 @@ package {
 			numPolicies = 0;
 			paused = true;
 			versusMode = false;
-			TD = false;
+			TD = true;
 			
 			print("", true);
 			printb("", true);
@@ -321,6 +321,9 @@ package {
 					bestAction = action;
 				}
 			}
+			if (curState.reward(bestAction) == 0) {
+				return placeRandom(str);
+			}
 			curState.place("x", bestAction);
 			
 			return new SApair(curState, bestAction)
@@ -530,6 +533,7 @@ package {
 		
 		private function updateFPS():void {
 			fpsTxt.text = (stage.frameRate) + " fps";
+			tdTxt.text = TD ? "on" : "off";
 			if (stage.frameRate > 60) {
 				stage.frameRate = 70;
 				fpsTxt.text = "TURBO";
